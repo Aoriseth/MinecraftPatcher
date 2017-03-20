@@ -2,6 +2,7 @@ package sample;
 
 import javafx.application.Platform;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -11,19 +12,26 @@ import java.io.IOException;
 
 
 class Launcher {
+    private Controller contr;
+
+    public Launcher(Controller parent) {
+        contr = parent;
+    }
 
     void launchMinecraft(String location) {
-        try {
-            Runtime.getRuntime().exec("java -jar " + location +"\\launcher.jar" );
-            Thread.sleep(1000);
-            Platform.exit();
-            System.exit(0);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            System.out.print("interrupted");
-        }
+        File minecraftLauncher = new File(location + "\\launcher.jar");
+        if (minecraftLauncher.exists()) {
+            try {
+                Runtime.getRuntime().exec("java -jar " + location + "\\launcher.jar");
+                Thread.sleep(1000);
+                Platform.exit();
+                System.exit(0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.out.println("interrupted");
+            }
+        } else contr.launchFailed();
     }
 }

@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -10,7 +11,7 @@ import java.io.File;
 public class Controller {
 
     private Downloader con = new Downloader();
-    private Launcher launch = new Launcher();
+    private Launcher launch = new Launcher(this);
 
     @FXML
     private TextField installLoc;
@@ -44,4 +45,13 @@ public class Controller {
         installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
     }
 
+    void launchFailed() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Platform.runLater(()->launchButton.setDisable(false));
+        Platform.runLater(()->launchButton.setText("Launch"));
+    }
 }
