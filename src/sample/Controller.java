@@ -22,9 +22,7 @@ public class Controller {
         launchButton.setDisable(true);
         launchButton.setText("Launching...");
         Runnable task1 = () -> launch.launchMinecraft(installLoc.getText());
-        Thread thread1 = new Thread(task1);
-        thread1.start();
-
+        new Thread(task1).start();
     }
 
     @FXML
