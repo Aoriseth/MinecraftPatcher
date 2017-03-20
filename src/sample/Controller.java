@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 
@@ -13,10 +14,17 @@ public class Controller {
 
     @FXML
     private TextField installLoc;
+    @FXML
+    private Button launchButton;
 
     @FXML
     private void launchHandle(){
-        launch.launchMinecraft(installLoc.getText());
+        launchButton.setDisable(true);
+        launchButton.setText("Launching...");
+        Runnable task1 = () -> launch.launchMinecraft(installLoc.getText());
+        Thread thread1 = new Thread(task1);
+        thread1.start();
+
     }
 
     @FXML
