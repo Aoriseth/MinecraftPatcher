@@ -30,7 +30,9 @@ public class Controller {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle("Choose Minecraft install location");
         File location = chooser.showDialog(installLoc.getScene().getWindow());
-        installLoc.setText(location.getAbsolutePath());
+
+        if (location!=null) installLoc.setText(location.getAbsolutePath());
+        else System.out.print("Please select a correct location.");
     }
 
     @FXML
