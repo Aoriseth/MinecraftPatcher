@@ -17,10 +17,13 @@ public class Downloader {
             System.out.println("Mod folder already exists");
         }
         File[] filesList = localFolder.listFiles();
+
+        // Print name of each file in mods folder
         if (filesList != null) {
             for (File file : filesList)
                 if (file.isFile()) System.out.println(file.getName());
         }
+
         return filesList;
     }
 
