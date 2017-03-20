@@ -28,11 +28,14 @@ public class Controller {
     @FXML
     private void dirHandle(){
         DirectoryChooser chooser = new DirectoryChooser();
+        File chosen = new File(installLoc.getText());
+        if(chosen.exists()) chooser.setInitialDirectory(new File(installLoc.getText()));
+
         chooser.setTitle("Choose Minecraft install location");
         File location = chooser.showDialog(installLoc.getScene().getWindow());
 
         if (location!=null) installLoc.setText(location.getAbsolutePath());
-        else System.out.print("Please select a correct location.");
+        else System.out.println("Please select a correct location.");
     }
 
     @FXML
