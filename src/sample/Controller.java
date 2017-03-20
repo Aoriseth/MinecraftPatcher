@@ -1,9 +1,8 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -11,8 +10,6 @@ public class Controller {
 
     private Downloader con = new Downloader();
 
-    @FXML
-    private Button launchButton;
     @FXML
     private TextField installLoc;
 
@@ -23,21 +20,18 @@ public class Controller {
 
     private void launchMinecraft(String location) {
         try {
-            Process proc = Runtime.getRuntime().exec("java -jar " + location +"launcher.jar" );
-            ((Stage)launchButton.getScene().getWindow()).setIconified(true);
-            proc.waitFor();
-            ((Stage)launchButton.getScene().getWindow()).setIconified(false);
+            Runtime.getRuntime().exec("java -jar " + location +"launcher.jar" );
+            Platform.exit();
+            System.exit(0);
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            System.out.print("failed");
         }
     }
 
     @FXML
     protected void initialize(){
+        //set install location to appdata/.minecraft
         System.out.println("Application loaded");
         installLoc.setText(System.getenv("Appdata")+"\\.minecraft\\");
 
