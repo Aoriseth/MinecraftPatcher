@@ -23,6 +23,8 @@ public class Controller {
     private TextArea output;
     @FXML
     private Button patchButton;
+    @FXML
+    private TextField serverAddress;
 
 
     @FXML
@@ -53,7 +55,7 @@ public class Controller {
 
     @FXML
     private void patchHandle(){
-        con.getLocalFiles(installLoc.getText());
+        con.patch(installLoc.getText(),serverAddress.getText());
     }
 
     @FXML
