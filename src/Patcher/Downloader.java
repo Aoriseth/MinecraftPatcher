@@ -1,10 +1,9 @@
-package sample;
+package Patcher;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**

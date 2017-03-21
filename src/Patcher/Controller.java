@@ -1,4 +1,4 @@
-package sample;
+package Patcher;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
