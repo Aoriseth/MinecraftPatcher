@@ -60,6 +60,7 @@ public class Controller {
 
     @FXML
     private void patchHandle(){
+        output.clear();
         con.patch(installLoc.getText(),serverAddress.getText());
     }
 
