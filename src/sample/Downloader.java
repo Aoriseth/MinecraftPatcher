@@ -44,7 +44,7 @@ class Downloader {
 
             Runnable task1 = () -> downloadMissing(missingMods,locdir,serverFolder,ftp);
             new Thread(task1).start();
-            cont.printOutput("Patching Finished, ready to launch!",true);
+
         }
 
     }
@@ -75,6 +75,8 @@ class Downloader {
             }
 
         }
+        cont.printOutput("Patching Finished, ready to launch!",true);
+        cont.updateProgress(1.0);
     }
 
     private ArrayList<String> getExcess(File[] localFiles, FTPFile[] remoteFiles) {
