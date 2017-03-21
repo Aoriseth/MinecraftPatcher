@@ -35,16 +35,10 @@ class Downloader {
             cont.printOutput("Connected to "+serverAddress,true);
             cont.printOutput("Loading folder "+serverFolder,true);
             FTPFile[] remoteFiles = getServerFiles(ftp, serverFolder);
-            cont.printOutput("Missing Mods",true);
-
             final ArrayList<String> missingMods = getMissing(localFiles,remoteFiles);
-            for (String test:missingMods) cont.printOutput(test, false);
-
             ArrayList<String> excessMods = getExcess(localFiles,remoteFiles);
-
             Runnable task1 = () -> downloadMissing(missingMods,locdir,serverFolder,ftp);
             new Thread(task1).start();
-
         }
 
     }
