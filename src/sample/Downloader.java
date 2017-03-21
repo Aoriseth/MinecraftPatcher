@@ -15,15 +15,13 @@ class Downloader {
     File[] getLocalFiles(String dir) {
         File localFolder = new File(dir);
         boolean success = localFolder.mkdir();
-        if(!success){
-            System.out.println("Mod folder already exists");
-        }
+        if(!success) cont.printOutput("Mod folder already exists or could not be created",true);
         File[] filesList = localFolder.listFiles();
 
         // Print name of each file in mods folder
         if (filesList != null) {
             for (File file : filesList)
-                if (file.isFile()) cont.printOutput(file.getName());
+                if (file.isFile()) cont.printOutput(file.getName(), false);
         }
 
         return filesList;

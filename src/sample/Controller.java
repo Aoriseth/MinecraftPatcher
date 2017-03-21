@@ -27,6 +27,11 @@ public class Controller {
 
     @FXML
     private void launchHandle(){
+
+        launchMinecraft();
+    }
+
+    private void launchMinecraft() {
         launchButton.setDisable(true);
         launchButton.setText("Launching...");
         Runnable task1 = () -> launch.launchMinecraft(installLoc.getText());
@@ -67,8 +72,8 @@ public class Controller {
         Platform.runLater(()->launchButton.setText("Launch"));
     }
 
-    void printOutput(String value){
-        Platform.runLater(()->output.appendText(value));
-        Platform.runLater(()->output.appendText("\n"));
+    void printOutput(String value, boolean fancy){
+        if (fancy) Platform.runLater(()->output.appendText("=== "+value+" ===\n"));
+        else Platform.runLater(()->output.appendText(value+"\n"));
     }
 }
