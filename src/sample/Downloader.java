@@ -3,8 +3,8 @@ package sample;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -28,7 +28,6 @@ class Downloader {
         String[] uri = link.split("/",2);
         String serverAddress = uri[0];
         String serverFolder = "/"+uri[1];
-
         File[] localFiles = getLocalFiles(locdir);
         FTPClient ftp = ftpConnect(serverAddress);
         if (ftp!=null) {
@@ -37,19 +36,47 @@ class Downloader {
             cont.printOutput("Loading folder "+serverFolder,true);
             FTPFile[] remoteFiles = getServerFiles(ftp, serverFolder);
             cont.printOutput("Missing Mods",true);
-            ArrayList<String> missingMods = getMissing(localFiles,remoteFiles);
-            for (String test:missingMods
-                 ) {
-                cont.printOutput(test,false);
-            }
+
+            final ArrayList<String> missingMods = getMissing(localFiles,remoteFiles);
+            for (String test:missingMods) cont.printOutput(test, false);
+
             ArrayList<String> excessMods = getExcess(localFiles,remoteFiles);
+
+            Runnable task1 = () -> downloadMissing(missingMods,locdir,serverFolder,ftp);
+            new Thread(task1).start();
+            cont.printOutput("Patching Finished, ready to launch!",true);
         }
 
     }
 
-    private ArrayList<String> getExcess(File[] localFiles, FTPFile[] remoteFiles) {
+    private void downloadMissing(ArrayList<String> missingMods, String locdir, String serverFolder, FTPClient ftp) {
+        for (String missing:missingMods) {
+            cont.printOutput("Missing file: "+missing+", Downloading...",false);
+            String remoteMod = serverFolder + missing;
+            File localMod = new File(locdir+"\\mods\\"+missing);
 
-        return null;
+            boolean success = false;
+            try (OutputStream stream = new BufferedOutputStream(new FileOutputStream(localMod))) {
+                success= ftp.retrieveFile(remoteMod,stream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (success) cont.printOutput("Download success.",false);
+
+        }
+    }
+
+    private ArrayList<String> getExcess(File[] localFiles, FTPFile[] remoteFiles) {
+        ArrayList<String> unfoundMods = new ArrayList<>();
+        for (File mod:localFiles) {
+            boolean found = false;
+            for (FTPFile remote:remoteFiles) {
+                if (mod.getName().equals(remote.getName())) found = true;
+            }
+            if (!found&&mod.isFile()) unfoundMods.add(mod.getName());
+        }
+        return unfoundMods;
     }
 
     private ArrayList<String> getMissing(File[] localFiles, FTPFile[] remoteFiles) {
@@ -59,9 +86,7 @@ class Downloader {
             for (File local:localFiles) {
                 if (mod.getName().equals(local.getName())) found = true;
             }
-            if (!found&&mod.isFile()) {
-                foundMods.add(mod.getName());
-            }
+            if (!found&&mod.isFile()) foundMods.add(mod.getName());
         }
         return foundMods;
     }
