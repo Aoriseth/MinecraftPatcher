@@ -81,6 +81,7 @@ class Downloader {
         }
         cont.printOutput("Patching Finished, ready to launch!",true);
         cont.updateProgress(1.0);
+        cont.resetInterface();
     }
 
     private ArrayList<String> getExcess(File[] localFiles, FTPFile[] remoteFiles) {

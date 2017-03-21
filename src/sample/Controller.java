@@ -30,6 +30,10 @@ public class Controller {
     private ProgressBar progressBar;
     @FXML
     private Button openButton;
+    @FXML
+    private ProgressBar progressBar2;
+    @FXML
+    private Label launcherLabel;
 
 
     @FXML
@@ -68,6 +72,8 @@ public class Controller {
     protected void initialize(){
         //set install location to appdata/.minecraft
         installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
+        launchButton.setDisable(true);
+        con.patch(installLoc.getText(),serverAddress.getText());
     }
 
     @FXML
@@ -94,9 +100,15 @@ public class Controller {
     void printOutput(String value, boolean fancy){
         if (fancy) Platform.runLater(()->output.appendText("=== "+value+" ===\n"));
         else Platform.runLater(()->output.appendText(value+"\n"));
+        Platform.runLater(()->launcherLabel.setText(value));
     }
 
     void updateProgress(double value){
         Platform.runLater(()->progressBar.setProgress(value));
+        Platform.runLater(()->progressBar2.setProgress(value));
+    }
+
+    void resetInterface() {
+        Platform.runLater(()->launchButton.setDisable(false));
     }
 }
