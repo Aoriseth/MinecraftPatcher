@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Controller {
 
@@ -27,6 +28,8 @@ public class Controller {
     private TextField serverAddress;
     @FXML
     private ProgressBar progressBar;
+    @FXML
+    private Button openButton;
 
 
     @FXML
@@ -64,6 +67,16 @@ public class Controller {
     protected void initialize(){
         //set install location to appdata/.minecraft
         installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
+    }
+
+    @FXML
+    private void openHandle(){
+        try {
+            Runtime.getRuntime().exec("explorer.exe \"" + installLoc.getText()+"\"");
+        } catch (IOException e) {
+            e.printStackTrace();
+            printOutput("Cannot open chosen directory.",true);
+        }
     }
 
     void launchFailed() {
