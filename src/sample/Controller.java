@@ -65,7 +65,8 @@ public class Controller {
     @FXML
     private void patchHandle(){
         output.clear();
-        con.patch(installLoc.getText(),serverAddress.getText());
+        Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
+        new Thread(task).start();
     }
 
     @FXML
@@ -73,7 +74,8 @@ public class Controller {
         //set install location to appdata/.minecraft
         installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
         launchButton.setDisable(true);
-        con.patch(installLoc.getText(),serverAddress.getText());
+        Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
+        new Thread(task).start();
     }
 
     @FXML

@@ -39,8 +39,7 @@ class Downloader {
             final ArrayList<String> missingMods = getMissing(localFiles,remoteFiles);
             ArrayList<String> excessMods = getExcess(localFiles,remoteFiles);
             removeExcess(excessMods,locdir);
-            Runnable task1 = () -> downloadMissing(missingMods,locdir,serverFolder,ftp);
-            new Thread(task1).start();
+            downloadMissing(missingMods,locdir,serverFolder,ftp);
         }
 
     }
