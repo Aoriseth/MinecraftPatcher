@@ -50,6 +50,12 @@ class Downloader {
     }
 
     private void downloadMissing(ArrayList<String> missingMods, String locdir, String serverFolder, FTPClient ftp) {
+        double progress = 0.0;
+        cont.updateProgress(progress);
+        double total = missingMods.size();
+        double step = 1.0;
+        if (total>0.0) step = 1.0/total;
+
         for (String missing:missingMods) {
             cont.printOutput("Missing file: "+missing+", Downloading...",false);
             String remoteMod = serverFolder + missing;
@@ -62,7 +68,11 @@ class Downloader {
                 e.printStackTrace();
             }
 
-            if (success) cont.printOutput("Download success.",false);
+            if (success) {
+                cont.printOutput("Download success.", false);
+                progress+=step;
+                cont.updateProgress(progress);
+            }
 
         }
     }

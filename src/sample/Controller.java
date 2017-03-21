@@ -25,6 +25,8 @@ public class Controller {
     private Button patchButton;
     @FXML
     private TextField serverAddress;
+    @FXML
+    private ProgressBar progressBar;
 
 
     @FXML
@@ -78,5 +80,9 @@ public class Controller {
     void printOutput(String value, boolean fancy){
         if (fancy) Platform.runLater(()->output.appendText("=== "+value+" ===\n"));
         else Platform.runLater(()->output.appendText(value+"\n"));
+    }
+
+    void updateProgress(double value){
+        Platform.runLater(()->progressBar.setProgress(value));
     }
 }
