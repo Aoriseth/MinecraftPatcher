@@ -2,21 +2,28 @@ package sample;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
 
 public class Controller {
 
-    private Downloader con = new Downloader();
+
+    private Downloader con = new Downloader(this);
     private Launcher launch = new Launcher(this);
 
     @FXML
     private TextField installLoc;
     @FXML
     private Button launchButton;
+    @FXML
+    private TabPane tabView;
+    @FXML
+    private TextArea output;
+    @FXML
+    private Button patchButton;
+
 
     @FXML
     private void launchHandle(){
@@ -40,6 +47,11 @@ public class Controller {
     }
 
     @FXML
+    private void patchHandle(){
+        con.getLocalFiles(installLoc.getText());
+    }
+
+    @FXML
     protected void initialize(){
         //set install location to appdata/.minecraft
         installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
@@ -53,5 +65,10 @@ public class Controller {
         }
         Platform.runLater(()->launchButton.setDisable(false));
         Platform.runLater(()->launchButton.setText("Launch"));
+    }
+
+    void printOutput(String value){
+        Platform.runLater(()->output.appendText(value));
+        Platform.runLater(()->output.appendText("\n"));
     }
 }

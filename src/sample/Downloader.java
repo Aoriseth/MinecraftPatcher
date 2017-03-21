@@ -6,11 +6,13 @@ import java.io.File;
  * Created by lennart on 3/20/2017.
  * This class will contain methods to download files via ftp and determine locally installed mods
  */
-public class Downloader {
-    Downloader() {
+class Downloader {
+    private Controller cont;
+    Downloader(Controller parent) {
+        cont=parent;
     }
 
-    public File[] getLocalFiles(String dir) {
+    File[] getLocalFiles(String dir) {
         File localFolder = new File(dir);
         boolean success = localFolder.mkdir();
         if(!success){
@@ -21,7 +23,7 @@ public class Downloader {
         // Print name of each file in mods folder
         if (filesList != null) {
             for (File file : filesList)
-                if (file.isFile()) System.out.println(file.getName());
+                if (file.isFile()) cont.printOutput(file.getName());
         }
 
         return filesList;
