@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 class Downloader {
     private Controller cont;
+
     Downloader(Controller parent) {
         cont=parent;
     }
@@ -37,10 +38,19 @@ class Downloader {
             FTPFile[] remoteFiles = getServerFiles(ftp, serverFolder);
             final ArrayList<String> missingMods = getMissing(localFiles,remoteFiles);
             ArrayList<String> excessMods = getExcess(localFiles,remoteFiles);
+            removeExcess(excessMods,locdir);
             Runnable task1 = () -> downloadMissing(missingMods,locdir,serverFolder,ftp);
             new Thread(task1).start();
         }
 
+    }
+
+    private void removeExcess(ArrayList<String> excessMods, String locdir) {
+        for (String mod:excessMods) {
+            cont.printOutput("Removing excess mod " + mod,false);
+            boolean delete = new File(locdir + "\\mods\\" + mod).delete();
+        }
+        cont.printOutput("Excess mods successfully removed",true);
     }
 
     private void downloadMissing(ArrayList<String> missingMods, String locdir, String serverFolder, FTPClient ftp) {
