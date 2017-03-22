@@ -59,7 +59,7 @@ public class Controller {
         File location = chooser.showDialog(installLoc.getScene().getWindow());
 
         if (location!=null) installLoc.setText(location.getAbsolutePath());
-        else System.out.println("Please select a correct location.");
+        else printOutput("Please select a correct location.",true);
     }
 
     @FXML
