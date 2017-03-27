@@ -106,7 +106,7 @@ public class Controller {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        printOutput("launcher.jar not found, please install minecraft",true);
+        printOutput("Minecraft not found, please install minecraft",true);
         Platform.runLater(()->launchButton.setDisable(false));
         Platform.runLater(()->launchButton.setText("Launch"));
     }

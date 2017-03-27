@@ -21,17 +21,33 @@ class Launcher {
     void launchMinecraft(String location) {
         File minecraftLauncher = new File(location + "\\launcher.jar");
         if (minecraftLauncher.exists()) {
+            run(minecraftLauncher);
+            return;
+        }
+        minecraftLauncher = new File(new File(location).getParentFile().getParentFile().getParentFile()+"\\MultiMC.exe");
+        if (minecraftLauncher.exists()) {
             try {
-                Runtime.getRuntime().exec("java -jar " + location + "\\launcher.jar");
-                Thread.sleep(1000);
-                Platform.exit();
-                System.exit(0);
+                Process process = new ProcessBuilder(minecraftLauncher.getAbsolutePath()).start();
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                System.out.println("interrupted");
             }
-        } else contr.launchFailed();
+            run(minecraftLauncher);
+            return;
+        }
+        contr.launchFailed();
+    }
+
+    private void run(File minecraftLauncher) {
+        try {
+            Runtime.getRuntime().exec("java -jar " + minecraftLauncher.getAbsolutePath());
+            Thread.sleep(1000);
+            Platform.exit();
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.out.println("interrupted");
+        }
     }
 }
