@@ -3,10 +3,16 @@ package Patcher;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class Controller {
 
@@ -72,7 +78,14 @@ public class Controller {
     @FXML
     protected void initialize(){
         //set install location to appdata/.minecraft
-        installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
+        //installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
+
+        try {
+            installLoc.setText(Controller.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            installLoc.setText(new File(installLoc.getText()).getParent());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         launchButton.setDisable(true);
         Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
         new Thread(task).start();
@@ -81,10 +94,9 @@ public class Controller {
     @FXML
     private void openHandle(){
         try {
-            Runtime.getRuntime().exec("explorer.exe \"" + installLoc.getText()+"\"");
+            Desktop.getDesktop().open(new File(installLoc.getText()));
         } catch (IOException e) {
             e.printStackTrace();
-            printOutput("Cannot open chosen directory.",true);
         }
     }
 
