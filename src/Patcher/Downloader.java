@@ -69,11 +69,14 @@ class Downloader {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            progress+=step;
+            cont.updateProgress(progress);
 
             if (success) {
                 cont.printOutput("Download success.", false);
-                progress+=step;
-                cont.updateProgress(progress);
+            }else {
+                boolean succeed = localMod.delete();
+                cont.printOutput("Download Failed.",false);
             }
 
         }

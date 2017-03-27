@@ -27,7 +27,7 @@ class Launcher {
         minecraftLauncher = new File(new File(location).getParentFile().getParentFile().getParentFile()+"\\MultiMC.exe");
         if (minecraftLauncher.exists()) {
             try {
-                Process process = new ProcessBuilder(minecraftLauncher.getAbsolutePath()).start();
+                new ProcessBuilder(minecraftLauncher.getAbsolutePath()).start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
