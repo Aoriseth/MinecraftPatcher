@@ -26,15 +26,25 @@ class Launcher {
         }
         minecraftLauncher = new File(new File(location).getParentFile().getParentFile().getParentFile()+"\\MultiMC.exe");
         if (minecraftLauncher.exists()) {
-            try {
-                new ProcessBuilder(minecraftLauncher.getAbsolutePath()).start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            run(minecraftLauncher);
+            winRun(minecraftLauncher);
             return;
         }
+        minecraftLauncher = new File(System.getenv("APPDATA")+"\\Curse Client\\Bin\\Curse.exe");
+        if (minecraftLauncher.exists()) {
+            winRun(minecraftLauncher);
+            return;
+        }
+
         contr.launchFailed();
+    }
+
+    private void winRun(File minecraftLauncher) {
+        try {
+            new ProcessBuilder(minecraftLauncher.getAbsolutePath()).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        run(minecraftLauncher);
     }
 
     private void run(File minecraftLauncher) {
