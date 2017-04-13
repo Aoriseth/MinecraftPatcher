@@ -1,6 +1,7 @@
 package Patcher;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -80,22 +81,22 @@ public class Controller {
     protected void initialize(){
         //set install location to appdata/.minecraft
         //installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
-        try {
-            installLoc.setText(Controller.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-            installLoc.setText(new File(installLoc.getText()).getParent());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        if(new File(installLoc.getText()+"\\settings.ini").exists()){
+            installLoc.setText(load.getPath());
+            serverAddress.setText(load.getServer());
 
-        }
-
-        load.saveToFile("test",installLoc.getText());
         launchButton.setDisable(true);
         Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
         new Thread(task).start();
 
     }
+
+    @FXML
+    public void exitApplication(ActionEvent event) {
+        System.out.println("test");
+        Platform.exit();
+    }
+
+
 
     @FXML
     private void openHandle(){
