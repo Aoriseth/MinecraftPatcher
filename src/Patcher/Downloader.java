@@ -38,6 +38,7 @@ class Downloader {
             final ArrayList<String> missingMods = getMissing(localFiles,remoteFiles);
             ArrayList<String> excessMods = getExcess(localFiles,remoteFiles);
             removeExcess(excessMods,locdir);
+            cont.printOutput(locdir,true);
             downloadMissing(missingMods,locdir,serverFolder,ftp);
         }
 
@@ -62,6 +63,7 @@ class Downloader {
             cont.printOutput("Missing file: "+missing+", Downloading...",false);
             String remoteMod = serverFolder + missing;
             File localMod = new File(locdir+"\\mods\\"+missing);
+            cont.printOutput(localMod.getAbsolutePath(),true);
 
             boolean success = false;
             try (OutputStream stream = new BufferedOutputStream(new FileOutputStream(localMod))) {

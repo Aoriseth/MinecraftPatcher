@@ -66,8 +66,10 @@ public class Controller {
         chooser.setTitle("Choose Minecraft install location");
         File location = chooser.showDialog(installLoc.getScene().getWindow());
 
-        if (location!=null) installLoc.setText(location.getAbsolutePath());
-        else printOutput("Please select a correct location.",true);
+        if (location!=null) {
+            installLoc.setText(location.getAbsolutePath());
+            load.setPath(location.getAbsolutePath());
+        } else printOutput("Please select a correct location.",true);
     }
 
     @FXML
@@ -81,8 +83,8 @@ public class Controller {
     protected void initialize(){
         //set install location to appdata/.minecraft
         //installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
-            installLoc.setText(load.getPath());
-            serverAddress.setText(load.getServer());
+        installLoc.setText(load.getPath());
+        serverAddress.setText(load.getServer());
 
         launchButton.setDisable(true);
         Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
@@ -97,6 +99,11 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void changeServerHandle(){
+        load.setServer(serverAddress.getText());
     }
 
     void launchFailed() {

@@ -19,51 +19,92 @@ class Loader {
             installLocation = new File(new File(Controller.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent());
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            parent.printOutput("Failed to determine install location",true);
+            parent.printOutput("Failed to determine install location", true);
         }
-        settings = new File(installLocation.getAbsolutePath()+"\\settings.ini");
-
-    }
-
-    void saveToFile(String data, String LocalDirectory) {
-        Properties prop = new Properties();
-        prop.put("InstallLocation","C://");
-        prop.put("ServerAddress",data);
-
-        File file = new File(installLocation+"\\settings.ini");
-        file.getParentFile().mkdirs();
-        PrintWriter printWriter = null;
-        parent.printOutput("Trying to write",true);
-        try {
-            printWriter = new PrintWriter(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("error writing");
-        }
-        if (printWriter!=null){
-            prop.list(printWriter);
-            printWriter.close();
-        }
-
+        settings = new File(installLocation.getAbsolutePath() + "\\patcher.properties");
 
     }
 
     public String getPath() {
-        if(settings.exists()){
-            Properties prop = new Properties();
+        Properties props = new Properties();
+        if (!settings.exists()){
+            createIni();
+            parent.printOutput("Creating properties file",true);
+        }
+            FileInputStream in = null;
             try {
-                prop.load(new FileInputStream(settings));
+                in = new FileInputStream(settings);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                props.load(in);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return props.getProperty("InstallLocation");
+    }
 
-            return prop.getProperty("InstallLocation");
+    private void createIni() {
+        Properties props = new Properties();
+        props.put("ServerAddress", "cockx.me/mods/");
+        props.put("InstallLocation", settings.getParentFile().getAbsolutePath());
+        saveProperties(props);
+    }
 
+    private void saveProperties(Properties props) {
+        try {
+            props.store(new FileOutputStream(settings),"Properties file for minecraftpatcher");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return installLocation.getAbsolutePath();
     }
 
     public String getServer() {
-        return "cockx.me/mods";
+        Properties props = new Properties();
+        if (!settings.exists()){
+            createIni();
+            parent.printOutput("Creating properties file",true);
+        }
+        FileInputStream in = null;
+        try {
+            in = new FileInputStream(settings);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            props.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return props.getProperty("ServerAddress");
+    }
+
+    public void setPath(String absolutePath) {
+        Properties props = getProperties();
+        props.setProperty("InstallLocation",absolutePath);
+        saveProperties(props);
+    }
+
+    private Properties getProperties() {
+        Properties props = new Properties();
+        FileInputStream in = null;
+        try {
+            in = new FileInputStream(settings);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            props.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return props;
+    }
+
+    public void setServer(String text) {
+        Properties props = getProperties();
+        props.setProperty("ServerAddress",text);
+        saveProperties(props);
     }
 }
