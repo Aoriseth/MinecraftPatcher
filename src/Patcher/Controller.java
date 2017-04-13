@@ -1,11 +1,10 @@
 package Patcher;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
@@ -13,14 +12,14 @@ import javafx.stage.DirectoryChooser;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
+@SuppressWarnings("WeakerAccess")
 public class Controller {
 
 
-    private Downloader con = new Downloader(this);
-    private Launcher launch = new Launcher(this);
-    private Loader load = new Loader(this);
+    private final Downloader con = new Downloader(this);
+    private final Launcher launch = new Launcher(this);
+    private final Loader load = new Loader(this);
 
     @FXML
     private TextField installLoc;

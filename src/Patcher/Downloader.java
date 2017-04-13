@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * This class will contain methods to download files via ftp and determine locally installed mods
  */
 class Downloader {
-    private Controller cont;
+    private final Controller cont;
 
     Downloader(Controller parent) {
         cont=parent;
@@ -47,7 +47,7 @@ class Downloader {
     private void removeExcess(ArrayList<String> excessMods, String locdir) {
         for (String mod:excessMods) {
             cont.printOutput("Removing excess mod " + mod,false);
-            boolean delete = new File(locdir + "\\mods\\" + mod).delete();
+            new File(locdir + "\\mods\\" + mod).delete();
         }
         cont.printOutput("Excess mods successfully removed",true);
     }
@@ -77,7 +77,7 @@ class Downloader {
             if (success) {
                 cont.printOutput("Download success.", false);
             }else {
-                boolean succeed = localMod.delete();
+                localMod.delete();
                 cont.printOutput("Download Failed.",false);
             }
 

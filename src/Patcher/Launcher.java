@@ -12,7 +12,7 @@ import java.io.IOException;
 
 
 class Launcher {
-    private Controller contr;
+    private final Controller contr;
 
     public Launcher(Controller parent) {
         contr = parent;

@@ -9,9 +9,9 @@ import java.util.Properties;
  * loads and saves configurations files
  */
 class Loader {
-    private Controller parent;
+    private final Controller parent;
     private File installLocation;
-    private File settings;
+    private final File settings;
 
     Loader(Controller controller) {
         parent = controller;
@@ -25,7 +25,7 @@ class Loader {
 
     }
 
-    public String getPath() {
+    String getPath() {
         Properties props = new Properties();
         if (!settings.exists()){
             createIni();
@@ -60,7 +60,7 @@ class Loader {
         }
     }
 
-    public String getServer() {
+    String getServer() {
         Properties props = new Properties();
         if (!settings.exists()){
             createIni();
@@ -80,7 +80,7 @@ class Loader {
         return props.getProperty("ServerAddress");
     }
 
-    public void setPath(String absolutePath) {
+    void setPath(String absolutePath) {
         Properties props = getProperties();
         props.setProperty("InstallLocation",absolutePath);
         saveProperties(props);
@@ -102,7 +102,7 @@ class Loader {
         return props;
     }
 
-    public void setServer(String text) {
+    void setServer(String text) {
         Properties props = getProperties();
         props.setProperty("ServerAddress",text);
         saveProperties(props);
