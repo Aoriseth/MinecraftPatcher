@@ -91,14 +91,6 @@ public class Controller {
     }
 
     @FXML
-    public void exitApplication(ActionEvent event) {
-        System.out.println("test");
-        Platform.exit();
-    }
-
-
-
-    @FXML
     private void openHandle(){
         try {
             Desktop.getDesktop().open(new File(installLoc.getText()));
