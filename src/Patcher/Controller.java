@@ -19,6 +19,7 @@ public class Controller {
 
     private Downloader con = new Downloader(this);
     private Launcher launch = new Launcher(this);
+    private Loader load = new Loader(this);
 
     @FXML
     private TextField installLoc;
@@ -79,16 +80,21 @@ public class Controller {
     protected void initialize(){
         //set install location to appdata/.minecraft
         //installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
-
         try {
             installLoc.setText(Controller.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             installLoc.setText(new File(installLoc.getText()).getParent());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+        if(new File(installLoc.getText()+"\\settings.ini").exists()){
+
+        }
+
+        load.saveToFile("test",installLoc.getText());
         launchButton.setDisable(true);
         Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
         new Thread(task).start();
+
     }
 
     @FXML
