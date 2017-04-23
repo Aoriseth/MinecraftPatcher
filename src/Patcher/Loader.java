@@ -107,4 +107,8 @@ class Loader {
         props.setProperty("ServerAddress",text);
         saveProperties(props);
     }
+
+    boolean checkFirstRun() {
+        return (!settings.exists());
+    }
 }

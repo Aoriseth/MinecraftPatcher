@@ -82,13 +82,17 @@ public class Controller {
     protected void initialize(){
         //set install location to appdata/.minecraft
         //installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
-        installLoc.setText(load.getPath());
-        serverAddress.setText(load.getServer());
+        if (load.checkFirstRun()){
 
-        launchButton.setDisable(true);
-        Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
-        new Thread(task).start();
-
+            tabView.getSelectionModel().select(1);
+            installLoc.setText(load.getPath());
+            serverAddress.setText(load.getServer());
+            printOutput("First time running the application: enter a server address",true);
+        }else{
+            launchButton.setDisable(true);
+            Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
+            new Thread(task).start();
+        }
     }
 
     @FXML
@@ -103,6 +107,7 @@ public class Controller {
     @FXML
     private void changeServerHandle(){
         load.setServer(serverAddress.getText());
+        printOutput("Server address changed to "+serverAddress.getText(),true);
     }
 
     void launchFailed() {
