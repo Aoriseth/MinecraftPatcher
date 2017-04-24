@@ -29,7 +29,7 @@ class Launcher {
             winRun(minecraftLauncher);
             return;
         }
-        minecraftLauncher = new File(System.getenv("APPDATA")+"\\Curse Client\\Bin\\Curse.exe");
+        minecraftLauncher = new File(System.getenv("APPDATA")+"\\Curse Client\\Bin\\Twitch.exe");
         if (minecraftLauncher.exists()) {
             winRun(minecraftLauncher);
             return;
