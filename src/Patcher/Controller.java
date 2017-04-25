@@ -12,6 +12,7 @@ import javafx.stage.DirectoryChooser;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 @SuppressWarnings("WeakerAccess")
 public class Controller {
@@ -89,6 +90,11 @@ public class Controller {
             serverAddress.setText(load.getServer());
             printOutput("First time running the application: enter a server address",true);
         }else{
+            try {
+                installLoc.setText(new File(new File(Controller.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent()).getAbsolutePath());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
             launchButton.setDisable(true);
             Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
             new Thread(task).start();
