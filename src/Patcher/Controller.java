@@ -84,17 +84,18 @@ public class Controller {
         //set install location to appdata/.minecraft
         //installLoc.setText(System.getenv("Appdata")+"\\.minecraft");
         if (load.checkFirstRun()){
-
-            tabView.getSelectionModel().select(1);
-            installLoc.setText(load.getPath());
-            serverAddress.setText(load.getServer());
-            printOutput("First time running the application: enter a server address",true);
-        }else{
             try {
                 installLoc.setText(new File(new File(Controller.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent()).getAbsolutePath());
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
+            tabView.getSelectionModel().select(1);
+            installLoc.setText(load.getPath());
+            serverAddress.setText(load.getServer());
+            printOutput("First time running the application: enter a server address",true);
+        }else{
+            installLoc.setText(load.getPath());
+            serverAddress.setText(load.getServer());
             launchButton.setDisable(true);
             Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
             new Thread(task).start();
