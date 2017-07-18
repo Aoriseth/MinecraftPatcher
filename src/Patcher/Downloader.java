@@ -30,13 +30,17 @@ class Downloader {
         String serverFolder = "/"+uri[1];
         File[] localFiles = getLocalFiles(locdir);
         FTPClient ftp = ftpConnect(serverAddress);
+
+
         if (ftp!=null) {
+            ftp.setBufferSize(1024000);
             cont.printOutput("Successfully connected to ftp server", true);
             cont.printOutput("Connected to "+serverAddress,true);
             cont.printOutput("Loading folder "+serverFolder,true);
             FTPFile[] remoteFiles = getServerFiles(ftp, serverFolder);
             final ArrayList<String> missingMods = getMissing(localFiles,remoteFiles);
             ArrayList<String> excessMods = getExcess(localFiles,remoteFiles);
+
             removeExcess(excessMods,locdir);
             cont.printOutput(locdir,true);
             downloadMissing(missingMods,locdir,serverFolder,ftp);
@@ -47,7 +51,10 @@ class Downloader {
     private void removeExcess(ArrayList<String> excessMods, String locdir) {
         for (String mod:excessMods) {
             cont.printOutput("Removing excess mod " + mod,false);
-            new File(locdir + "\\mods\\" + mod).delete();
+            boolean success = new File(locdir + "\\mods\\" + mod).delete();
+            if (success){
+                cont.printOutput("Excess mod "+mod+" removed",false);
+            }
         }
         cont.printOutput("Excess mods successfully removed",true);
     }
@@ -77,7 +84,10 @@ class Downloader {
             if (success) {
                 cont.printOutput("Download success.", false);
             }else {
-                localMod.delete();
+                boolean ok = localMod.delete();
+                if(ok){
+                    cont.printOutput("Local temp file removed",false);
+                }
                 cont.printOutput("Download Failed.",false);
             }
 

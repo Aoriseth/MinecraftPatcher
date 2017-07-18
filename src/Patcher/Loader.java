@@ -49,6 +49,8 @@ class Loader {
         Properties props = new Properties();
         props.put("ServerAddress", "cockx.me/mods/");
         props.put("InstallLocation", settings.getParentFile().getAbsolutePath());
+        props.put("FTPUser", "");
+        props.put("FTPPass", "");
         saveProperties(props);
     }
 
@@ -106,6 +108,58 @@ class Loader {
         Properties props = getProperties();
         props.setProperty("ServerAddress",text);
         saveProperties(props);
+    }
+
+    void setUser(String text) {
+        Properties props = getProperties();
+        props.setProperty("FTPUser",text);
+        saveProperties(props);
+    }
+
+    void setPass(String text) {
+        Properties props = getProperties();
+        props.setProperty("FTPPass",text);
+        saveProperties(props);
+    }
+
+    String getUser() {
+        Properties props = new Properties();
+        if (!settings.exists()){
+            createIni();
+            parent.printOutput("Creating properties file",true);
+        }
+        FileInputStream in = null;
+        try {
+            in = new FileInputStream(settings);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            props.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return props.getProperty("FTPUser");
+    }
+
+    String getPass() {
+        Properties props = new Properties();
+        if (!settings.exists()){
+            createIni();
+            parent.printOutput("Creating properties file",true);
+        }
+        FileInputStream in = null;
+        try {
+            in = new FileInputStream(settings);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            props.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return props.getProperty("FTPPass");
     }
 
     boolean checkFirstRun() {

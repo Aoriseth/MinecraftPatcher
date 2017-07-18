@@ -21,6 +21,7 @@ public class Controller {
     private final Downloader con = new Downloader(this);
     private final Launcher launch = new Launcher(this);
     private final Loader load = new Loader(this);
+    private final Uploader upl = new Uploader(this);
 
     @FXML
     private TextField installLoc;
@@ -42,6 +43,15 @@ public class Controller {
     private ProgressBar progressBar2;
     @FXML
     private Label launcherLabel;
+
+    @FXML
+    private TextField usernameField;
+    @FXML
+    private TextField passwordField;
+    @FXML
+    private Button syncButton;
+    @FXML
+    private Button loginButton;
 
 
     @FXML
@@ -96,9 +106,11 @@ public class Controller {
         }else{
             installLoc.setText(load.getPath());
             serverAddress.setText(load.getServer());
-            launchButton.setDisable(true);
-            Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
-            new Thread(task).start();
+            usernameField.setText(load.getUser());
+            passwordField.setText(load.getPass());
+//            launchButton.setDisable(true);
+//            Runnable task = ()-> con.patch(installLoc.getText(),serverAddress.getText());
+//            new Thread(task).start();
         }
     }
 
@@ -139,7 +151,28 @@ public class Controller {
         Platform.runLater(()->progressBar2.setProgress(value));
     }
 
+    @FXML
+    private void tryLogin(){
+        output.clear();
+        load.setUser(usernameField.getText());
+        load.setPass(passwordField.getText());
+        upl.login(serverAddress.getText(),usernameField.getText(),passwordField.getText());
+    }
+
     void resetInterface() {
         Platform.runLater(()->launchButton.setDisable(false));
+    }
+
+    public void uploadConnectSuccess() {
+        usernameField.setDisable(true);
+        passwordField.setDisable(true);
+        syncButton.setDisable(false);
+        loginButton.setDisable(true);
+    }
+
+    @FXML
+    private void syncToServer(){
+        output.clear();
+        upl.upload(installLoc.getText());
     }
 }
